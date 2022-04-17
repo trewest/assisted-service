@@ -92,6 +92,7 @@ function generate_configuration() {
     OPERATOR_OS_IMAGES=$(< ${__root}/data/default_os_images.json jq -c 'del (.[] | select(.openshift_version == "4.6",.openshift_version == "4.7"))')
     PUBLIC_CONTAINER_REGISTRIES=$(< ${__root}/data/default_public_container_registries.txt)
     HW_VALIDATOR_REQUIREMENTS=$(< ${__root}/data/default_hw_requirements.json tr -d "\n\t ")
+    MAX_HOST_DISCONNECTION_TIME=$(< ${__root}/data/default_max_host_disconnection_time.txt)
 
     sed -i "s|value: '.*' # os images|value: '${OS_IMAGES}' # os images|" ${__root}/openshift/template.yaml
     sed -i "s|value: '.*' # release images|value: '${RELEASE_IMAGES}' # release images|" ${__root}/openshift/template.yaml
@@ -103,6 +104,7 @@ function generate_configuration() {
     sed -i "s|RELEASE_IMAGES:.*|RELEASE_IMAGES: '${OKD_RELEASE_IMAGES}'|" ${__root}/deploy/podman/okd-configmap.yml
     sed -i "s|PUBLIC_CONTAINER_REGISTRIES:.*|PUBLIC_CONTAINER_REGISTRIES: '${PUBLIC_CONTAINER_REGISTRIES}'|" ${__root}/deploy/podman/{okd-,}configmap.yml
     sed -i "s|HW_VALIDATOR_REQUIREMENTS:.*|HW_VALIDATOR_REQUIREMENTS: '${HW_VALIDATOR_REQUIREMENTS}'|" ${__root}/deploy/podman/{okd-,}configmap.yml
+    sed -i "s|MAX_HOST_DISCONNECTION_TIME:.*|MAX_HOST_DISCONNECTION_TIME: '${MAX_HOST_DISCONNECTION_TIME}'|" ${__root}/deploy/podman/{okd-,}configmap.yml
 
     # Updated operator manifests with openshift versions
     sed -i "s|value: '.*' # os images|value: '${OPERATOR_OS_IMAGES}' # os images|" ${__root}/config/manager/manager.yaml

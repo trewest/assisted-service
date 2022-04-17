@@ -63,8 +63,6 @@ var WrongBootOrderIgnoreTimeoutStages = []models.HostStage{
 
 var InstallationTimeout = 20 * time.Minute
 
-var MaxHostDisconnectionTime = 3 * time.Minute
-
 //Weights for sorting hosts in the monitor
 const (
 	HostWeightMinimumCpuCores        float64 = 4
@@ -74,6 +72,10 @@ const (
 	HostWeightDiskWeight             float64 = 0.004
 )
 
+type InstallationConfig struct {
+	MaxHostDisconnectionTime time.Duration `envconfig:"MAX_HOST_DISCONNECTION_TIME" default:"3m"`
+}
+
 type LogTimeoutConfig struct {
 	LogCollectionTimeout time.Duration `envconfig:"HOST_LOG_COLLECTION_TIMEOUT" default:"10m"`
 	LogPendingTimeout    time.Duration `envconfig:"HOST_LOG_PENDING_TIMEOUT" default:"2m"`
@@ -81,6 +83,7 @@ type LogTimeoutConfig struct {
 
 type Config struct {
 	LogTimeoutConfig
+	InstallationConfig
 	EnableAutoReset         bool                    `envconfig:"ENABLE_AUTO_RESET" default:"false"`
 	EnableAutoAssign        bool                    `envconfig:"ENABLE_AUTO_ASSIGN" default:"true"`
 	ResetTimeout            time.Duration           `envconfig:"RESET_CLUSTER_TIMEOUT" default:"3m"`

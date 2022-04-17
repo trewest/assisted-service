@@ -45,6 +45,9 @@ parameters:
 - name: HW_VALIDATOR_REQUIREMENTS
   value: ''
   required: true
+- name: MAX_HOST_DISCONNECTION_TIME
+  value: ''
+  required: true
 - name: INSTALLER_IMAGE
   value: ''
   required: true
@@ -276,6 +279,8 @@ objects:
                 value: ${OCM_LOG_LEVEL}
               - name: HW_VALIDATOR_REQUIREMENTS
                 value: ${HW_VALIDATOR_REQUIREMENTS}
+              - name: MAX_HOST_DISCONNECTION_TIME
+                value: ${MAX_HOST_DISCONNECTION_TIME}
               - name: INSTALLER_IMAGE
                 value: ${INSTALLER_IMAGE}
               - name: SELF_VERSION

@@ -608,7 +608,7 @@ func (th *transitionHandler) HostNotResponsiveWhilePreparingInstallation(sw stat
 	if !ok {
 		return false, errors.New("HostNotResponsiveWhilePreparingInstallation incompatible type of StateSwitch")
 	}
-	return !hostIsResponsive(sHost.host), nil
+	return !hostIsResponsive(sHost.host, th.config.MaxHostDisconnectionTime), nil
 }
 
 func (th *transitionHandler) HostNotResponsiveWhileInstallation(sw stateswitch.StateSwitch, args stateswitch.TransitionArgs) (bool, error) {
@@ -616,7 +616,7 @@ func (th *transitionHandler) HostNotResponsiveWhileInstallation(sw stateswitch.S
 	if !ok {
 		return false, errors.New("HostNotResponsiveWhileInstallation incompatible type of StateSwitch")
 	}
-	return funk.Contains(disconnectionValidationStages, sHost.host.Progress.CurrentStage) && !hostIsResponsive(sHost.host), nil
+	return funk.Contains(disconnectionValidationStages, sHost.host.Progress.CurrentStage) && !hostIsResponsive(sHost.host, th.config.MaxHostDisconnectionTime), nil
 }
 
 func getFailedValidations(params *TransitionArgsRefreshHost) []string {
@@ -643,8 +643,8 @@ func validationFailed(params *TransitionArgsRefreshHost, validationId string) bo
 	return false
 }
 
-func hostIsResponsive(host *models.Host) bool {
-	return host.CheckedInAt.String() == "" || time.Since(time.Time(host.CheckedInAt)) <= MaxHostDisconnectionTime
+func hostIsResponsive(host *models.Host, maxDisconnect time.Duration) bool {
+	return host.CheckedInAt.String() == "" || time.Since(time.Time(host.CheckedInAt)) <= maxDisconnect
 }
 
 func (th *transitionHandler) PostRefreshHostRefreshStageUpdateTime(

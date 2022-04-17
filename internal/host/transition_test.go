@@ -1436,6 +1436,8 @@ var _ = Describe("Refresh Host", func() {
 			models.HostStageWritingImageToDisk,
 		}
 
+		installationConfig := new(InstallationConfig)
+
 		for j := range installationStages {
 			stage := installationStages[j]
 			name := fmt.Sprintf("installationInProgress stage %s", stage)
@@ -1445,7 +1447,7 @@ var _ = Describe("Refresh Host", func() {
 				host = hostutil.GenerateTestHost(hostId, infraEnvId, clusterId, srcState)
 				host.Inventory = hostutil.GenerateMasterInventory()
 				host.Role = models.HostRoleMaster
-				host.CheckedInAt = strfmt.DateTime(time.Now().Add(-MaxHostDisconnectionTime - time.Minute))
+				host.CheckedInAt = strfmt.DateTime(time.Now().Add(-installationConfig.MaxHostDisconnectionTime - time.Minute))
 
 				progress := models.HostProgressInfo{
 					CurrentStage:   stage,
@@ -1493,7 +1495,7 @@ var _ = Describe("Refresh Host", func() {
 				host = hostutil.GenerateTestHost(hostId, infraEnvId, clusterId, srcState)
 				host.Inventory = hostutil.GenerateMasterInventory()
 				host.Role = models.HostRoleWorker
-				host.CheckedInAt = strfmt.DateTime(time.Now().Add(-MaxHostDisconnectionTime - time.Minute))
+				host.CheckedInAt = strfmt.DateTime(time.Now().Add(-installationConfig.MaxHostDisconnectionTime - time.Minute))
 
 				progress := models.HostProgressInfo{
 					CurrentStage:   models.HostStageDone,
@@ -1532,13 +1534,15 @@ var _ = Describe("Refresh Host", func() {
 
 		var srcState string
 
+		installationConfig := new(InstallationConfig)
+
 		passedTime := 90 * time.Minute
 		It("host disconnected & preparing for installation", func() {
 			srcState = models.HostStatusPreparingForInstallation
 			host = hostutil.GenerateTestHost(hostId, infraEnvId, clusterId, srcState)
 			host.Inventory = hostutil.GenerateMasterInventory()
 			host.Role = models.HostRoleMaster
-			host.CheckedInAt = strfmt.DateTime(time.Now().Add(-MaxHostDisconnectionTime - time.Minute))
+			host.CheckedInAt = strfmt.DateTime(time.Now().Add(-installationConfig.MaxHostDisconnectionTime - time.Minute))
 
 			progress := models.HostProgressInfo{
 				StageStartedAt: strfmt.DateTime(time.Now().Add(-passedTime)),

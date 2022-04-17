@@ -24,6 +24,7 @@ data:
   POSTGRESQL_PASSWORD: admin
   POSTGRESQL_USER: admin
   PUBLIC_CONTAINER_REGISTRIES: 'quay.io'
+  MAX_HOST_DISCONNECTION_TIME: 3
   SERVICE_BASE_URL: http://127.0.0.1:8090
   STORAGE: filesystem
   OS_IMAGES: '[{"openshift_version":"4.10","cpu_architecture":"x86_64","url":"https://builds.coreos.fedoraproject.org/prod/streams/testing/builds/35.20220116.2.0/x86_64/fedora-coreos-35.20220116.2.0-live.x86_64.iso","rootfs_url":"https://builds.coreos.fedoraproject.org/prod/streams/testing/builds/35.20220116.2.0/x86_64/fedora-coreos-35.20220116.2.0-live-rootfs.x86_64.img","version":"35.20220116.2.0"}]'

@@ -63,6 +63,7 @@ type validationContext struct {
 	infraEnv                *common.InfraEnv
 	inventory               *models.Inventory
 	db                      *gorm.DB
+	installationConfig      InstallationConfig
 	clusterHostRequirements *models.ClusterHostRequirements
 	minCPUCoresRequirement  int64
 	minRAMMibRequirement    int64
@@ -252,7 +253,7 @@ type validator struct {
 }
 
 func (v *validator) isConnected(c *validationContext) ValidationStatus {
-	return boolValue(c.host.CheckedInAt.String() == "" || time.Since(time.Time(c.host.CheckedInAt)) <= MaxHostDisconnectionTime)
+	return boolValue(c.host.CheckedInAt.String() == "" || time.Since(time.Time(c.host.CheckedInAt)) <= c.installationConfig.MaxHostDisconnectionTime)
 }
 
 func (v *validator) printConnected(context *validationContext, status ValidationStatus) string {
